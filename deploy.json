@@ -32,6 +32,12 @@
             "metadata": {
                 "description": "Branch name of the repository."
             }
+        },
+        "resourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the existing resource group."
+            }
         }
     },
     "variables": {},
@@ -45,7 +51,15 @@
                 "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
             ],
             "properties": {
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "1"
+                        }
+                    ]
+                }
             }
         },
         {
@@ -56,7 +70,6 @@
             "sku": {
                 "name": "[parameters('skuName')]"
             },
-            "properties": {}
         },
         {
             "type": "Microsoft.Web/sites/sourcecontrols",
