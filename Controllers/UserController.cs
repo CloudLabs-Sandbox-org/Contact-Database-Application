@@ -33,6 +33,20 @@ namespace CRUD_application_2.Controllers
             return View();
         }
 
+        // GET: User
+        public ActionResult Search(string searchString)
+        {
+            var users = from u in userlist
+                        select u;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(s => s.Name.Contains(searchString) || s.Email.Contains(searchString));
+            }
+
+            return View(users.ToList());
+        }
+
         // POST: User/Create
         [HttpPost]
         public ActionResult Create(User user)
