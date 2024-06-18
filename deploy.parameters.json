@@ -17,6 +17,9 @@
         
         "branch": {
             "value": "master"
+        },
+        "resourceGroupName":{
+            "value": "GitHub-Copilot-Challenges"
         }
     }
 }
