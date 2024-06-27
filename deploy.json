@@ -1,0 +1,90 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webAppName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the web app."
+            }
+        },
+        "appServicePlanName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the app service plan."
+            }
+        },
+        "skuName": {
+            "type": "string",
+            "defaultValue": "F1",
+            "metadata": {
+                "description": "SKU name for the app service plan."
+            }
+        },
+        "repoUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "URL of the repository."
+            }
+        },
+        "branch": {
+            "type": "string",
+            "metadata": {
+                "description": "Branch name of the repository."
+            }
+        },
+        "resourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the existing resource group."
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2019-08-01",
+            "name": "[parameters('webAppName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "WEBSITE_RUN_FROM_PACKAGE",
+                            "value": "1"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2019-08-01",
+            "name": "[parameters('appServicePlanName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "[parameters('skuName')]"
+            },
+        },
+        {
+            "type": "Microsoft.Web/sites/sourcecontrols",
+            "apiVersion": "2019-08-01",
+            "name": "[concat(parameters('webAppName'), '/web')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]"
+            ],
+            "properties": {
+                "RepoUrl": "[parameters('repoUrl')]",
+                "branch": "[parameters('branch')]",
+                "IsManualIntegration": true
+            }
+        }
+    ],
+    "outputs": {}
+}

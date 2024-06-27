@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webAppName": {
+            "value": "contact_database_app"
+        },
+        "appServicePlanName": {
+            "value": "contact_database_app_service_plan"
+        },
+        "skuName": {
+            "value": "F1"
+        },
+        "repoUrl": {
+            "value": "https://github.com/github-cloudlabsuser-2141/Contact-Database-Application.git"
+        },
+        
+        "branch": {
+            "value": "master"
+        },
+        "resourceGroupName":{
+            "value": "GitHub-Copilot-Challenges"
+        }
+    }
+}
